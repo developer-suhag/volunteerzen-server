@@ -42,7 +42,6 @@ async function run() {
       const result = await serviceCollection.findOne(query);
       console.log("hit it ", id);
       res.json(result);
-      // res.send("dasdfadsf");
     });
 
     // Event POST API
@@ -50,6 +49,14 @@ async function run() {
       const event = req.body;
       const result = await eventCollection.insertOne(event);
       res.json(result);
+    });
+
+    // use POST to get data by emails
+    app.post("/events/byEmail", async (req, res) => {
+      const values = req.body;
+      const query = { Email: { $in: values } };
+      const events = await eventCollection.find(query).toArray();
+      res.json(events);
     });
   } finally {
     // await client.close()
