@@ -58,6 +58,15 @@ async function run() {
       const events = await eventCollection.find(query).toArray();
       res.json(events);
     });
+
+    // DELETE API
+    app.delete("/events/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await eventCollection.deleteOne(query);
+      res.json(result);
+      console.log("hitting id", id);
+    });
   } finally {
     // await client.close()
   }
