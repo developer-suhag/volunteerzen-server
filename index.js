@@ -2,6 +2,7 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
+const ObjectId = require("mongodb").ObjectId;
 
 const port = process.env.PORT || 5000;
 
@@ -32,6 +33,22 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    // GET single Event API
+    app.get("/events/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await serviceCollection.findOne(query);
+      console.log("hit it ", id);
+      res.json(result);
+      // res.send("dasdfadsf");
+    });
+    // app.get("/events/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: ObjectId(id) };
+    //   const service = await servicesCollection.findOne(query);
+    //   res.json(service);
+    // });
   } finally {
     // await client.close()
   }
