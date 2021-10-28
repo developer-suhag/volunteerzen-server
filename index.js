@@ -26,6 +26,7 @@ async function run() {
     await client.connect();
     const database = client.db("volunteerzen");
     const serviceCollection = database.collection("services");
+    const eventCollection = database.collection("events");
 
     // GET API
     app.get("/services", async (req, res) => {
@@ -43,12 +44,13 @@ async function run() {
       res.json(result);
       // res.send("dasdfadsf");
     });
-    // app.get("/events/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: ObjectId(id) };
-    //   const service = await servicesCollection.findOne(query);
-    //   res.json(service);
-    // });
+
+    // Event POST API
+    app.post("/event", async (req, res) => {
+      const event = req.body;
+      const result = await eventCollection.insertOne(event);
+      res.json(result);
+    });
   } finally {
     // await client.close()
   }
